@@ -1,0 +1,237 @@
+from selenium import webdriver
+from time import sleep
+import tkinter as tk
+from tkinter import*
+#import random
+#from win32api import GetKeyState
+from tkinter import messagebox
+#from PIL import ImageTk, Image
+#from getpass import getpass
+
+root = tk.Tk()
+#root.configure(bg="white")
+root.geometry("500x350+425+165")
+root.title("İnstaBot")
+
+#pip install pillow
+#pip install selenium
+#chromedriver indirlmeli --> chromedriver web sitesinden kendi chrome sürümünüze uygun olanı indirin, dosya yolunu kopyalayıp webdriver.Chrome() kısmının içine yapıştırın
+pip install selenium
+
+
+
+title_ = tk.Label(root, text="Kullancı Girişi Bot", font=("Helvetica 18 bold"), bg="black", width="55", height="2", fg="white")
+title_.pack()
+
+#USERNAME
+username = tk.Label(root, text="Kullancı Adı:", font=("Helvetica",15), fg="black")
+username.place(x=38, y=70)
+
+username_entry = Entry(root, relief="solid",font=("Helvetica",11))
+username_entry.place(x=38, y=100)
+
+
+#PASSWORD
+password = tk.Label(root, text="Şifre:", font=("Helvetica",15), fg="black")
+password.place(x=38, y=140)
+
+password_entry = Entry(root, relief="solid" ,font=("Helvetica",11))
+password_entry.place(x=38, y=170)
+#password_entry.config(show="*")
+
+
+#PHONE
+phone = tk.Label(root, text="Telefon No:", font=("Helvetica",15), fg="black")
+phone.place(x=38, y=210)
+
+phone_entry = Entry(root, relief="solid" ,font=("Helvetica",11))
+phone_entry.place(x=38, y=240)
+
+
+#NAME-SURNAME
+name_surname = tk.Label(root, text="Ad Soyad:", font=("Helvetica",15), fg="black")
+name_surname.place(x=300, y=70)
+
+name_surname_entry = Entry(root, relief="solid" ,font=("Helvetica",11))
+name_surname_entry.place(x=300, y=100)
+
+
+#DATE-MONTH
+date_month = tk.Label(root, text="Doğum Tarihi (Ay):", font=("Helvetica",15), fg="black")
+date_month.place(x=300, y=140)
+
+date_month_entry = Entry(root, relief="solid" ,font=("Helvetica",11))
+date_month_entry.place(x=300, y=170)
+
+
+#DATE-DAY
+date_day = tk.Label(root, text="Doğum Tarihi (Gün):", font=("Helvetica",15), fg="black")
+date_day.place(x=300, y=210)
+
+date_day_entry = Entry(root, relief="solid" ,font=("Helvetica",11))
+date_day_entry.place(x=300, y=240)
+
+
+#DATE-YEAR
+date_year = tk.Label(root, text="Doğum Tarihi (Yıl):", font=("Helvetica",15), fg="black")
+date_year.place(x=38, y=280)
+
+date_year_entry = Entry(root, relief="solid" ,font=("Helvetica",11))
+date_year_entry.place(x=38, y=310)
+
+
+
+#LOGIN BUTTON-FUNCTION
+def login():
+
+    list_new_user = []
+
+    
+    def log_adder():
+        list_new_user.append(username_entry.get())
+        list_new_user.append(password_entry.get())
+        list_new_user.append(name_surname_entry.get())
+        list_new_user.append("0" + phone_entry.get())
+        list_new_user.append(date_month_entry.get().capitalize())
+        list_new_user.append(date_day_entry.get())
+        list_new_user.append(date_year_entry.get())
+        print(list_new_user)
+        return list_new_user
+        
+        print(log_adder())
+        
+
+    if (len(username_entry.get()) > 45) or not(password_entry.get().isdigit()) or (phone_entry.get() == "0" + phone_entry.get()) or ((date_month_entry.get().isdigit()) and not(date_month_entry.get().upper())) or not(len(date_year_entry.get()) == 4):
+        messagebox.showerror("Hata","Kullanıcı adı, parola, telefon no, ad soyad ve doğum tarihi (ay) girilirken koşullara uygun olup olmadığına dikkat ediniz")
+        messagebox.showinfo("Bilgilendirme (Koşullar)","Kullanıcı adı en fazla 25 karakterden oluşabilir\nParola sadece sayılardan oluşmalıdır\nTelefon no girlirken başına sıfır getirmeyiniz\nAd soyad girilirken aralarında boşluk bırakınız\nDoğum Tarihi (Ay) girilirken sayıyla değil yazıyla giriniz\nDoğum Tarihi (Yıl) 4 basamaklı olmalıdır")
+    
+    else:
+        messagebox.showinfo("Bilgilendirme instaBot", "Kullanıcı bilgileri sisteme kaydedildi, hesabınız en geç 2 dakika içinde oluşacak")
+        
+
+        #USER REGISTER
+        register = open(f"nweUser-{username_entry.get()}"+".txt","w+")
+        #register = open("C:user/web/PYTHON\PROJELER/register_users.txt","w+")
+        register.write(f"new-user-account: {username_entry.get()}\n")
+        register.write(f"new-user-password: {password_entry.get()} \n")
+        register.write(f"new-user-phone:  {phone_entry.get()}\n")
+        register.write(f"new-user-name_surname: {name_surname_entry.get()} \n")
+        register.write(f"new-user-date_month:  {date_month_entry.get()}\n")
+        register.write(f"new-user-date_day: {date_day_entry.get()} \n")
+        register.write(f"new-user-date_day: {date_year_entry.get()} \n")
+        register.write(f"new-user-informations: {log_adder()}\n")
+        register.close()
+        
+        print(username_entry.get())
+        print(password_entry.get())
+        print(phone_entry.get())
+        print(name_surname_entry.get())
+        print(date_month_entry.get())
+        print(date_day_entry.get())
+        print(date_year_entry.get())
+        
+        password_entry.delete(0,"end")
+        username_entry.delete(0,"end")
+        phone_entry.delete(0,"end")
+        name_surname_entry.delete(0,"end")
+        date_month_entry.delete(0,"end")
+        date_day_entry.delete(0,"end")
+        date_year_entry.delete(0,"end")
+
+        root.destroy()
+
+        print(list_new_user)
+
+        #instaBot main
+        username_insta_bot = list_new_user[0]
+        name_surname_insta_bot = list_new_user[2]
+        phone_insta_bot = list_new_user[3]
+        password_insta_bot = list_new_user[1]
+        date_month_insta_bot = list_new_user[4]
+        date_day_insta_bot = list_new_user[5]
+        date_year_insta_bot = list_new_user[6]
+
+
+        driver_web = webdriver.Chrome("C:\\Users\\Admin\\Desktop\\chromedriver.exe")
+        driver_web.get("https://instagram.com/")
+        sleep(2)
+
+        login_new_user = driver_web.find_element_by_css_selector("#react-root > section > main > article > div.rgFsT > div:nth-child(2) > div > p > a")
+        login_new_user.click()
+
+        sleep(3)
+
+        phone_input = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div.P8adC > form > div:nth-child(4) > div > label > input")
+        phone_input.click()
+        phone_input.send_keys(phone_insta_bot)
+
+        sleep(3)
+
+        name_sur_input = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div.P8adC > form > div:nth-child(5) > div > label > input")
+        name_sur_input.click()
+        name_sur_input.send_keys(name_surname_insta_bot)
+
+        sleep(3)
+
+
+        username_input = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div.P8adC > form > div:nth-child(6) > div > label > input")
+        username_input.click()
+        username_input.send_keys(username_insta_bot)
+
+        sleep(3)
+
+        password_input = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div.P8adC > form > div:nth-child(7) > div > label > input")
+        password_input.click()
+        password_input.send_keys(password_insta_bot)
+
+
+        sleep(3)
+
+
+        login_new_account = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div.P8adC > form > div:nth-child(8) > div > button")
+        login_new_account.click()
+
+        sleep(3)
+
+        date_1 = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div > div.qF0y9.Igw0E.IwRSH.eGOV_.acqo5._4EzTm.bkEs3.DhRcB > div > div > span > span:nth-child(1) > select")
+        date_1.click()
+        date_1.send_keys(date_month_insta_bot)
+        sleep(0.5)
+        date_1.click()
+
+        sleep(3)
+
+        date_2 = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div > div.qF0y9.Igw0E.IwRSH.eGOV_.acqo5._4EzTm.bkEs3.DhRcB > div > div > span > span:nth-child(2) > select")
+        date_2.click()
+        date_2.send_keys(date_day_insta_bot)
+        sleep(0.5)
+
+
+        sleep(3)
+
+        date_3 = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div > div.qF0y9.Igw0E.IwRSH.eGOV_.acqo5._4EzTm.bkEs3.DhRcB > div > div > span > span:nth-child(3) > select")
+        date_3.click()
+        date_3.send_keys(date_year_insta_bot)
+        sleep(0.5)
+        date_3.click()
+
+        sleep(3)
+
+        further = driver_web.find_element_by_css_selector("#react-root > section > main > div > div > div:nth-child(1) > div > div.qF0y9.Igw0E.IwRSH.eGOV_.acqo5._4EzTm.lC6p0.g6RW6 > button")
+        further.click()
+
+        sleep(2)
+
+        sleep(65)
+        driver_web.close()
+
+    
+        
+        
+
+#LOGIN BUTTON
+login_btn = tk.Button(root,text="Kayıt Ol", activeforeground="black" ,activebackground="white" ,bg="black", fg="white",command=(login), cursor="hand2" ,font=("Helvetica 12 bold"), padx=25, pady=9)
+login_btn.place(x=320, y=290) 
+
+
+root.mainloop()
